@@ -1,0 +1,10 @@
+package com.shopme.admin.band;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class BrandController {
+	@Autowired
+	private
+}

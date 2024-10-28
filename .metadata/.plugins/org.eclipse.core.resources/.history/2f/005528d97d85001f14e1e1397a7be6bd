@@ -1,0 +1,43 @@
+package com.shopme.admin.band;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.shopme.admin.category.CategoryService;
+import com.shopme.common.entity.Brand;
+
+@RestController
+public class BandRestController {
+	@Autowired
+	private CategoryService categoryService;
+	
+	@Autowired
+	private BrandService brandService;
+	
+	@PostMapping("/bands/check_unique")
+	public String checkUnique(@Param("id") Integer id, @Param("name") String name) {
+		return brandService.checkUnique(id, name);
+	}
+	
+	@GetMapping("/brands/page/{pageNum}")
+	public String listByPage (@PathVariable(name = "pageNum") int pageNum, Model model,
+			@Param("sortField") String sortField, @Param("sortDir") String sortDir,
+			@Param("keyword") String keyword) {
+		Page<Brand> page = brandService.listByPage(pageNum, sortField, sortDir, keyword);
+		List<Brand> listBrands = page.getContent();
+		
+		long startCount = (pageNum -1) * brandService.BRANDS_PER_PAGE + 1;
+		long endCount = startCount + brandService.BRANDS_PER_PAGE - 1;
+		if(endCount > page.getTotalElements()) {
+			endCount = page.getTotalElements();
+		}
+	}
+}
