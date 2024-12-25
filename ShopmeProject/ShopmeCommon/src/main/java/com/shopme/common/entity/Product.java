@@ -17,10 +17,10 @@ public class Product {
     @Column(unique = true, length = 256, nullable = false)
     private String alias;
 
-    @Column(length = 512, nullable = false, name = "short_discription")
+    @Column(length = 512, nullable = false, name = "short_description")
     private String shortDescription;
 
-    @Column(length = 4096, nullable = false, name = "full_discription")
+    @Column(length = 4096, nullable = false, name = "full_description")
     private String fullDescription;
 
     @Column(name = "created_time")
@@ -271,5 +271,13 @@ public class Product {
             return name.substring(0, 70).concat("...");
         }
         return name;
+    }
+
+    @Transient
+    public float getDiscountPrice() {
+        if (discountPercent > 0) {
+            return price * (1-discountPercent/100);
+        }
+        return this.price;
     }
 }

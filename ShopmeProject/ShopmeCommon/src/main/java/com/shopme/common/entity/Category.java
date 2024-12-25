@@ -3,19 +3,9 @@ package com.shopme.common.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.Transient;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "categories")
@@ -44,6 +34,7 @@ public class Category {
 	private Category parent;
 	
 	@OneToMany(mappedBy = "parent")
+	@OrderBy("name asc")
 	private Set<Category> children = new HashSet<>();
 	
 	public Category() {
